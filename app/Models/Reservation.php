@@ -6,21 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Schedule extends Model
+class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'date', 'theater_hall', 'capacity'
+        'name', 'identifier', 'email', 'phone', 'seats'
     ];
 
-    public function movie()
+    public function schedule()
     {
-        return $this->belongsTo(Movie::class);
-    }
-
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
+        return $this->belongsTo(Schedule::class);
     }
 }
