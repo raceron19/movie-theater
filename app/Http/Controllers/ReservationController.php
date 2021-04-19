@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReservationCreated;
 use App\Models\Reservation;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -36,6 +38,13 @@ class ReservationController extends Controller
         }
         // if available seats are higher than the requested seats then save the reservation
         $reservation = $schedule->reservations()->create($data);
+
+        /**
+         * This line below is one way to send emails in Laravel, we just need to run de php artisan make:mail NameYouWantForYourMailClass
+         * and then make the configuration as you see in the ReservationCreated mail class and set up the env vars related 
+         * to mail stuff, a good option to test in development it's using mailtrap.  
+         */
+        Mail::to($data['email'])->send(new ReservationCreated($reservation, $schedule));
         return $reservation;
     }
 }
